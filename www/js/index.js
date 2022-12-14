@@ -28,13 +28,34 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 }
 
-let button = document.getElementById("button")
+let button = document.getElementById("button");
+
 
 button.onclick = function(){
     let newTask = prompt("Add new Task: ");
     
-    newTask = "<li><a>"+newTask+"</a></li>";
+    newTask = "<li>"+newTask+"</li>";
 
     $("ul").append(newTask).listview( "refresh" );
-    //$("ul li:last-child a").addClass("ui-btn ui-btn-icon-right ui-icon-carat-r");
+
+    $("li").last().append("<button class='borrar'>Borrar</button>");
+    borrar()
+    
+}
+
+let list = $("ul");
+
+list.each(function() {
+    $( this ).children().append("<button class='borrar'>Borrar</button>");
+});
+
+
+function borrar(){
+    $(".borrar").click(function(){
+        console.log("pulsa")
+
+    
+        $(this).parent().remove()
+    
+    })
 }
