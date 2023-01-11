@@ -29,18 +29,44 @@ function onDeviceReady() {
 }
 
 let button = document.getElementById("button");
+let editButton = document.getElementById("editButton");
+
+let liElement = "";
+let inputEdit = document.getElementById("editElement");
+editButton.onclick = function(){
+
+    li = $(this).parent()
+    
+    window.location.href = "#editar"
+    inputEdit.value = liElement.children().first()[0].innerHTML
+    
+}
+
+$("#editSave").click(function(){
+    newText = inputEdit.value;
+
+    window.location.href = "#homePage"
+    
+    li.children().first()[0].innerHTML = newText
+
+})
+
+
+    
 
 
 button.onclick = function(){
     let newTask = prompt("Add new Task: ");
     
-    newTask = "<li>"+newTask+"</li>";
+    newTask = "<li>"+newTask+"<button class='borrar ui-btn ui-shadow ui-corner-all'>Borrar</button>"+"</li>";
 
     $("ul").append(newTask).listview( "refresh" );
 
-    $("li").last().append("<button class='borrar'>Borrar</button>");
+    //$("li").last().append("");
+
+    //$("ul").listview("refresh")
+
     borrar()
-    
 }
 
 let list = $("ul");
@@ -48,6 +74,8 @@ let list = $("ul");
 list.each(function() {
     $( this ).children().append("<button class='borrar'>Borrar</button>");
 });
+
+borrar()
 
 
 function borrar(){
