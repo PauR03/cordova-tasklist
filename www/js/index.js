@@ -29,44 +29,40 @@ function onDeviceReady() {
 }
 
 let button = document.getElementById("button");
-let editButton = document.getElementById("editButton");
+let editButton = document.getElementById("");
 
 let liElement = "";
 let inputEdit = document.getElementById("editElement");
-editButton.onclick = function(){
 
-    li = $(this).parent()
-    
-    window.location.href = "#editar"
-    inputEdit.value = liElement.children().first()[0].innerHTML
-    
-}
 
 $("#editSave").click(function(){
     newText = inputEdit.value;
 
     window.location.href = "#homePage"
     
-    li.children().first()[0].innerHTML = newText
+    liElement.children().first()[0].innerHTML = newText
 
 })
 
-
+function editar(){
+    $(".editButton").click(function(){
+        liElement = $(this).parent()
+        
+        window.location.href = "#editar"
+        inputEdit.value = liElement.children().first()[0].innerHTML
     
-
+    })
+}
 
 button.onclick = function(){
     let newTask = prompt("Add new Task: ");
     
-    newTask = "<li>"+newTask+"<button class='borrar ui-btn ui-shadow ui-corner-all'>Borrar</button>"+"</li>";
+    newTask = "<li><h1>"+newTask+"</h1><button class='editButton ui-btn ui-shadow ui-corner-all'>Editar</button><button class='borrar ui-btn ui-shadow ui-corner-all'>Borrar</button>"+"</li>";
 
     $("ul").append(newTask).listview( "refresh" );
 
-    //$("li").last().append("");
-
-    //$("ul").listview("refresh")
-
     borrar()
+    editar()
 }
 
 let list = $("ul");
@@ -76,14 +72,11 @@ list.each(function() {
 });
 
 borrar()
+editar()
 
 
 function borrar(){
     $(".borrar").click(function(){
-        console.log("pulsa")
-
-    
         $(this).parent().remove()
-    
     })
 }
