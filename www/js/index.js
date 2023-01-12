@@ -63,6 +63,7 @@ button.onclick = function(){
 
     borrar()
     editar()
+    addToStorage()
 }
 
 let list = $("ul");
@@ -78,5 +79,18 @@ editar()
 function borrar(){
     $(".borrar").click(function(){
         $(this).parent().remove()
+        addToStorage()
     })
+}
+
+
+
+function addToStorage(){
+    let arrayObjetos = []
+    $("ul>li>h1").each(function(){
+        arrayObjetos.push($(this).text())
+    })
+    arrayObjetos = JSON.stringify(arrayObjetos)
+    
+    localStorage.setItem("objetos", arrayObjetos);
 }
