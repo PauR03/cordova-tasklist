@@ -33,7 +33,7 @@ let editButton = document.getElementById("");
 
 let liElement = "";
 let inputEdit = document.getElementById("editElement");
-
+let inputBeforeEdit = "";
 
 $("#editSave").click(function(){
     newText = inputEdit.value;
@@ -41,7 +41,15 @@ $("#editSave").click(function(){
     window.location.href = "#homePage"
     
     liElement.children().first()[0].innerHTML = newText
+    let arrayObjetos = JSON.parse(localStorage.getItem("objetos"));
 
+    let index = arrayObjetos.indexOf(inputBeforeEdit)
+    if (index !== -1) {
+        arrayObjetos[index] = newText;
+    }
+    
+    OBJarrayObjetos = JSON.stringify(arrayObjetos)
+    localStorage.setItem("objetos", OBJarrayObjetos);
 })
 
 function editar(){
@@ -50,7 +58,8 @@ function editar(){
         
         window.location.href = "#editar"
         inputEdit.value = liElement.children().first()[0].innerHTML
-    
+
+        inputBeforeEdit = liElement.children().first()[0].innerHTML
     })
 }
 
@@ -66,31 +75,56 @@ button.onclick = function(){
     addToStorage()
 }
 
-let list = $("ul");
-
-list.each(function() {
-    $( this ).children().append("<button class='borrar'>Borrar</button>");
-});
-
 borrar()
 editar()
+addToStorage()
+printLocalStorage()
 
 
 function borrar(){
     $(".borrar").click(function(){
         $(this).parent().remove()
-        addToStorage()
+
+        let arrayObjetos = []
+        $("ul>li>h1").each(function(){
+            arrayObjetos.push($(this).text())
+        })
+
+        OBJarrayObjetos = JSON.stringify(arrayObjetos)
+        localStorage.setItem("objetos", OBJarrayObjetos);
     })
 }
 
 
 
 function addToStorage(){
-    let arrayObjetos = []
-    $("ul>li>h1").each(function(){
-        arrayObjetos.push($(this).text())
-    })
-    arrayObjetos = JSON.stringify(arrayObjetos)
+    if(JSON.parse(localStorage.getItem("objetos"))){
+        let arrayObjetos = JSON.parse(localStorage.getItem("objetos"));
+
+        $("ul>li>h1").each(function(){
+            if(!arrayObjetos.includes($(this).text())){
+                arrayObjetos.push($(this).text())
+            }
+        })
+        OBJarrayObjetos = JSON.stringify(arrayObjetos)
+        localStorage.setItem("objetos", OBJarrayObjetos);
+    }else{
+        let arrayObjetos = []
+        OBJarrayObjetos = JSON.stringify(arrayObjetos)
+        localStorage.setItem("objetos", OBJarrayObjetos);
+    }
     
-    localStorage.setItem("objetos", arrayObjetos);
+    borrar()
+    editar()
+}
+
+function printLocalStorage(){
+    let arrayObjetos = JSON.parse(localStorage.getItem("objetos"));
+
+    for(let i = 0; i < arrayObjetos.length; i++){
+        newTask = "<li><h1>"+arrayObjetos[i]+"</h1><button class='editButton ui-btn ui-shadow ui-corner-all'>Editar</button><button class='borrar ui-btn ui-shadow ui-corner-all'>Borrar</button>"+"</li>";
+        $("ul").append(newTask) ;
+    }
+    borrar()
+    editar()
 }
